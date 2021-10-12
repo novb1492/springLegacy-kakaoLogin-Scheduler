@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -93,6 +94,7 @@ public class rs {
 		 awsService awsService=new awsService();
 		 awsService.deleteFile("kimsshop/images", "2021-10-12f2b0fb82-bb82-4873-855b-b8bf5f843a1a사본 -스크린샷(1837).png");
 	}
+    @CrossOrigin
     @RequestMapping("/imageUpload")
     public JSONObject imageUpload( MultipartHttpServletRequest request,HttpServletResponse response) {
         System.out.println("imageUpload요청");   
