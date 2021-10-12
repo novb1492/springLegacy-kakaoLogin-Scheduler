@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -87,19 +88,19 @@ public class rs {
     
     }
     @RequestMapping("/imageUpload")
-    public void imageUpload(@RequestParam(name = "file") MultipartFile request,HttpServletResponse response) {
+    public JSONObject imageUpload( MultipartHttpServletRequest request,HttpServletResponse response) {
         System.out.println("imageUpload요청");   
-        /*List<MultipartFile> multipartFiles=new ArrayList<MultipartFile>();
+ 
+       List<MultipartFile> multipartFiles=new ArrayList<MultipartFile>();
 		try {
-			MultipartHttpServletRequest multipartHttpServletRequest=(MultipartHttpServletRequest)request;
-			multipartFiles = multipartHttpServletRequest.getFiles("upload");
+			multipartFiles = request.getFiles("upload");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        System.out.println(multipartFiles.toString());*/
+        System.out.println(multipartFiles.toString());
         awsService awsService=new awsService();
-        awsService.uploadAws(request, "kimsshop/images");
+        return awsService.uploadAws(multipartFiles.get(0), "kimsshop/images");
 
     }
 
