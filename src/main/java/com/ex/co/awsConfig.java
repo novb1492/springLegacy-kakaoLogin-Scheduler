@@ -35,8 +35,7 @@ public class awsConfig {
     }
 
     public void fileupload(String bucketName,String fileName, File file) throws FileNotFoundException{
-        this.s3Client.putObject(new PutObjectRequest(bucketName,fileName, file)
-                .withCannedAcl(CannedAccessControlList.PublicRead));
+        this.s3Client.putObject(bucketName,fileName, file);
     }
     public void deleteFile(String bucktetName,String fileName) {
     	this.s3Client.deleteObject(bucktetName, fileName);
