@@ -34,11 +34,8 @@ public class awsConfig {
         s3Client.setEndpoint("s3.ap-northeast-2.amazonaws.com"); //  아시아 태평양 서울
     }
 
-
     public void fileupload(String bucketName,String fileName, File file) throws FileNotFoundException{
-
-        String fileExt = file.getName().split("[.]")[1];
-        this.s3Client.putObject(new PutObjectRequest(bucketName, "bucket하위 경로/"+fileName+"."+fileExt, file)
+        this.s3Client.putObject(new PutObjectRequest(bucketName,fileName, file)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
     }
 }
