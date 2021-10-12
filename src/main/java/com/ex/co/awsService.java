@@ -50,4 +50,7 @@ public class awsService {
         }
         return file;
     }
+    public void deleteFile(String bucktetName,String fileName) {
+    	awsConfig.deleteFile(bucktetName, fileName);
+    }
 }

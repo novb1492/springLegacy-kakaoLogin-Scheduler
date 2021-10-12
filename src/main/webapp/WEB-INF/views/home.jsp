@@ -13,14 +13,13 @@
 <input type="button"onclick="goKakaoLogin()"value="kakoLogin">
 <input type="button"onclick="sendsms()"value="sendsms">
 <P>  The time on the server is ${serverTime}. </P>
-3
-4
+   <a href="/co/deleteImage">del</a>
 <form id="form1" action="/co/imageUpload" method="post" enctype="multipart/form-data">
     <input type="file" name="file">
     <input type="submit">
 </form>
     <textarea id="summernote" name="editordata"></textarea>
-    
+
 </body>
 <script type="text/javascript">
 class MyUploadAdapter {

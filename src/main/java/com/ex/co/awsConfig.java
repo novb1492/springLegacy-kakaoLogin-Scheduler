@@ -38,5 +38,8 @@ public class awsConfig {
         this.s3Client.putObject(new PutObjectRequest(bucketName,fileName, file)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
     }
+    public void deleteFile(String bucktetName,String fileName) {
+    	this.s3Client.deleteObject(bucktetName, fileName);
+    }
 }
 

@@ -87,6 +87,12 @@ public class rs {
         }
     
     }
+    @RequestMapping("/deleteImage")
+    public void deleteImage() {
+		System.out.println("deleteImage");
+		 awsService awsService=new awsService();
+		 awsService.deleteFile("kimsshop/images", "2021-10-12f2b0fb82-bb82-4873-855b-b8bf5f843a1a사본 -스크린샷(1837).png");
+	}
     @RequestMapping("/imageUpload")
     public JSONObject imageUpload( MultipartHttpServletRequest request,HttpServletResponse response) {
         System.out.println("imageUpload요청");   
@@ -103,6 +109,7 @@ public class rs {
         return awsService.uploadAws(multipartFiles.get(0), "kimsshop/images");
 
     }
+   
 
     
 }
