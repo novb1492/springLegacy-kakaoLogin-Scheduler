@@ -20,6 +20,7 @@
 </form>
     <textarea id="summernote" name="editordata"></textarea>
 <input type="button" value="seteditor" onclick="seteditor()">
+<input type="button" value="geteditor" onclick="geteditor()">
 </body>
 <script type="text/javascript">
 let editor;
@@ -123,6 +124,10 @@ ClassicEditor
 function seteditor() {
 	alert('b');
 	 editor.setData('<p>example</p><img src="https://s3.ap-northeast-2.amazonaws.com/kimsshop/images/2021-10-136a47a7e1-d86c-443a-980b-24a03fe9d03cabcd.png">');
+}
+function geteditor() {
+	alert('a');
+	alert(editor.getData());
 }
 var xhr=new XMLHttpRequest();
 function goKakaoLogin(){
