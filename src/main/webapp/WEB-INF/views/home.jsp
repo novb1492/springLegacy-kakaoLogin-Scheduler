@@ -19,9 +19,11 @@
     <input type="submit">
 </form>
     <textarea id="summernote" name="editordata"></textarea>
-
+<input type="button" value="seteditor" onclick="seteditor()">
 </body>
 <script type="text/javascript">
+let editor;
+
 class MyUploadAdapter {
     constructor(props) {
         // CKEditor 5's FileLoader instance.
@@ -111,13 +113,17 @@ ClassicEditor
 
         // ...
     } )
-	.then( editor => {
-        console.log( 'Editor was initialized', editor );
-        myEditor = editor;
+	.then( newEditor  => {
+        console.log( 'Editor was initialized', newEditor  );
+        editor = newEditor ;
     } )
 	.catch( error => {
 	   
 	} );
+function seteditor() {
+	alert('b');
+	 editor.setData('<p>example</p><img src="https://s3.ap-northeast-2.amazonaws.com/kimsshop/images/2021-10-136a47a7e1-d86c-443a-980b-24a03fe9d03cabcd.png">');
+}
 var xhr=new XMLHttpRequest();
 function goKakaoLogin(){
     xhr.open('POST', '/co/test', true); 
