@@ -153,7 +153,7 @@ public class rs {
          
     }
     private String requestPayString() {
-        return  String.format("%s%s%s%s%s%s%s","nxca_jt_il","card","test1","20211014","113000","500","ST1009281328226982205");
+        return  String.format("%s%s%s%s%s%s%s","nxca_jt_il","card","test4","20211014","113000","500","ST1009281328226982205");
     }
     private String requestcancleString(String mchtTrdNo,String price,String mchtId,String trdDt,String trdTm) {
         System.out.println("requestcancleString");
