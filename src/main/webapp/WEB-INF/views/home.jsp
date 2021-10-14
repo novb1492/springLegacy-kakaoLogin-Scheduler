@@ -1,7 +1,12 @@
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
+
 <html>
 <head>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://tbnpg.settlebank.co.kr/resources/js/SettlePG.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/29.1.0/classic/ckeditor.js"></script>
 	<title>Home</title>
 </head>
@@ -22,6 +27,7 @@
 <input type="button" value="seteditor" onclick="seteditor()">
 <input type="button" value="geteditor" onclick="geteditor()">
 <input type="button" value="settle" onclick="settle()">
+<input type="button" value="opensettle" onclick="opensettle()">
 </body>
 <script type="text/javascript">
 
@@ -166,6 +172,56 @@ function  settle(){
 	            alert('abc');
 	        }
 	    }  
+}
+function opensettle() {
+	var r=fisrtRequest('/co/getInfor',null);
+	console.log(r.pktHash);
+	  SETTLE_PG.pay({
+	        "env": "https://tbnpg.settlebank.co.kr",
+	        "mchtId": "nxca_jt_il",
+	        "method": "card",
+	        "trdDt": 20211014,    
+	        "trdTm": 113000,
+	        "mchtTrdNo": "test1",
+	        "mchtName": "kimsshop",
+	        "mchtEName": "kimsshop",
+	        "pmtPrdtNm": "test",
+	        "trdAmt": r.trdAmt,
+	        "notiUrl": "http://kim80800.iptime.org:8080/auth/settlebank",
+	        "nextUrl": "http://localhost:3030/doneSettlebankPage.jsp",
+	        "cancUrl": "https://localhost:8443/canceSettlePage.html",
+	        "pktHash": r.pktHash,
+	        "ui": {
+	            "type": "popup",
+	            "width": "430",
+	            "height": "660"
+	        }
+	        }, function(rsp){
+	            //iframe인경우 온다고 한다
+	            console.log('통신완료');
+	            console.log(rsp);
+	        });      
+}
+var result;
+function fisrtRequest(requestUrl,data){
+    reUrl=requestUrl;
+    $.ajax({
+        type: 'POST',
+        url: requestUrl,
+        dataType : "json",
+        data: data,
+        contentType: "application/json; charset:UTF-8",
+        async: false,
+        xhrFields: {withCredentials: true},
+        success: function(response) {
+            result=response;
+        },
+        error : function(request,status,error) {
+            showError(request,status,error);
+        }
+    });
+    console.log(result);
+    return result;
 }
 </script>
 </html>

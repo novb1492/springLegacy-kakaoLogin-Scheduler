@@ -143,6 +143,18 @@ public class rs {
          requestToSettle("https://tbgw.settlebank.co.kr/spay/APICancel.do", body);
          
     }
+    @RequestMapping("/getInfor")
+    public JSONObject getInfor() {
+    	System.out.println("getInfor");
+    	JSONObject jsonObject=new JSONObject();
+    	jsonObject.put("pktHash",sha256.encrypt(requestPayString()));
+    	jsonObject.put("trdAmt", aes256.encrypt("500"));
+    	return jsonObject;
+         
+    }
+    private String requestPayString() {
+        return  String.format("%s%s%s%s%s%s%s","nxca_jt_il","card","test1","20211014","113000","500","ST1009281328226982205");
+    }
     private String requestcancleString(String mchtTrdNo,String price,String mchtId,String trdDt,String trdTm) {
         System.out.println("requestcancleString");
         return  String.format("%s%s%s%s%s%s",trdDt,trdTm,mchtId,mchtTrdNo,price,"ST1009281328226982205"); 
