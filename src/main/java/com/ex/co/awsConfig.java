@@ -12,7 +12,7 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 
-@Component
+//@Component
 public class awsConfig {
 
     private String accessKey ="AKIAXVQHL24PHXPXKYU4";

@@ -21,8 +21,10 @@
     <textarea id="summernote" name="editordata"></textarea>
 <input type="button" value="seteditor" onclick="seteditor()">
 <input type="button" value="geteditor" onclick="geteditor()">
+<input type="button" value="settle" onclick="settle()">
 </body>
 <script type="text/javascript">
+
 let editor;
 
 class MyUploadAdapter {
@@ -153,6 +155,17 @@ function sendsms(){
             alert('abc');
         }
     }  
+}
+function  settle(){
+	 xhr.open('POST', '/co/settle', true); 
+	    xhr.send(); 
+	    xhr.onload = function() { 
+	        if(xhr.status==200){
+	        	alert('abc');
+	        }else{
+	            alert('abc');
+	        }
+	    }  
 }
 </script>
 </html>

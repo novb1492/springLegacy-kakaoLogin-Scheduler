@@ -1,8 +1,12 @@
 package com.ex.co;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -111,7 +115,107 @@ public class rs {
         return awsService.uploadAws(multipartFiles.get(0), "kimsshop/images");
 
     }
-   
-
+    @RequestMapping("/settle")
+    public void settle() {
+    	System.out.println("settle");
+    	  Map<String,String>map=getTrdDtTrdTm();
+          String pktHash=requestcancleString("reservation5470474622",Integer.toString(1000),"nxca_jt_il",map.get("trdDt"),map.get("trdTm"));
+          //requestcancleString("reservation1630370258",Integer.toString(2000),"nxca_jt_il",map.get("trdDt"),map.get("trdTm"));
+          System.out.println(2000);
+          JSONObject body=new JSONObject();
+          JSONObject params=new JSONObject();
+          JSONObject data=new JSONObject();
+          params.put("mchtId","nxca_jt_il");
+          params.put("ver", "0A17");
+          params.put("method", "CA");
+          params.put("bizType", "C0");
+          params.put("encCd", "23");
+          params.put("mchtTrdNo","reservation5470474622");
+          params.put("trdDt", map.get("trdDt"));
+          params.put("trdTm",map.get("trdTm"));
+          data.put("cnclOrd", "1");
+          data.put("pktHash",sha256.encrypt(pktHash));
+          data.put("orgTrdNo","STFP_PGCAnxca_jt_il0211014105043M1158168");
+          data.put("crcCd", "KRW");
+          data.put("cnclAmt",aes256.encrypt(Integer.toString(1000)));
+          body.put("params", params);
+          body.put("data", data);
+         requestToSettle("https://tbgw.settlebank.co.kr/spay/APICancel.do", body);
+         
+    }
+    private String requestcancleString(String mchtTrdNo,String price,String mchtId,String trdDt,String trdTm) {
+        System.out.println("requestcancleString");
+        return  String.format("%s%s%s%s%s%s",trdDt,trdTm,mchtId,mchtTrdNo,price,"ST1009281328226982205"); 
+    }
+    private static Map<String,String> getTrdDtTrdTm() {
+        System.out.println("getTrdDtTrdTm");
+        Timestamp timestamp=Timestamp.valueOf(LocalDateTime.now());
+        System.out.println(timestamp+" 시간");
+        String[] spl=timestamp.toString().split(" ");
+        String trdDt=spl[0].replace("-","");
+        System.out.println(trdDt+" 요일");
+        String min=LocalDateTime.now().getMinute()+"";
+        String second=LocalDateTime.now().getSecond()+"";
+        String hour=LocalDateTime.now().getHour()+"";
+        if(hour.length()<2){
+            hour="0"+hour;
+        }
+        if(min.length()<2){
+            min="0"+min;
+        }
+        if(second.length()<2){
+            second="0"+second;
+        }
+        String trdTm=hour+min+second;
+        System.out.println(trdTm+" 요일");
+        Map<String,String>map=new HashMap<>();
+        map.put("trdDt", trdDt);
+        map.put("trdTm", trdTm);
+        return map;
+    }
+    private JSONObject requestToSettle(String url,JSONObject body) {
+        System.out.println("reuqestToSettle");
+         RestTemplate restTemplate=new RestTemplate();
+         HttpHeaders headers=new HttpHeaders();
+        try {
+            headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+            headers.set("charset", "UTF-8");
+      
+            HttpEntity<JSONObject>entity=new HttpEntity<>(body,headers);
+            System.out.println(entity.getBody()+" 요청정보"+entity.getHeaders());
+            JSONObject response= restTemplate.postForObject(url,entity,JSONObject.class);
+            System.out.println(response+" 세틀뱅크 통신결과");
+            showResponse(response);
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("requestToSettle error "+ e.getMessage());
+            throw new RuntimeException("세틀뱅크 통신 실패");
+        }finally{
+            body.clear();
+            headers.clear();
+        }
+    }
+    private void showResponse(JSONObject response) {
+        LinkedHashMap<String,Object> data=(LinkedHashMap<String,Object>) response.get("data");
+        System.out.println(data+" 세틀뱅크 통신결과");
+        if(data.get("cnclAmt")!=null){
+            System.out.println("환불 금액"+aesToNomal((String)data.get("cnclAmt")));
+            System.out.println("환불 가능 금액"+aesToNomal((String)data.get("blcAmt")));
+        }
+        LinkedHashMap<String,Object> params=(LinkedHashMap<String,Object>) response.get("params");
+        if(params.get("outStatCd").equals("0031")){
+            System.out.println("세틀 뱅크 0031 ");
+            throw new RuntimeException((String) params.get("outRsltMsg"));
+        }
+    }
+    public String aesToNomal(String hash) {
+        try {
+            byte[] aesCipherRaw2=aes256.decodeBase64(hash);
+            return new String(aes256.aes256DecryptEcb(aesCipherRaw2),"UTF-8");
+        } catch (Exception e) {
+            throw new RuntimeException("복호화 실패");
+        }
+    }
     
 }
