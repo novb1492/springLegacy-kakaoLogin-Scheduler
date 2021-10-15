@@ -7,5 +7,6 @@
 테스트
 카카오로그인/스케쥴러/coolsms/aws s3/ckeditor5
 settle환불/결제창호출/결제후 결과받기성공
+카카오페이 역시 성공
 
 security/mailsender/아직실패

@@ -149,6 +149,18 @@ function sendsms(){
         }
     }  
 }
+function  kakaopay() {
+	xhr.open('POST', '/co/kakaopay', true); 
+    xhr.send(); 
+    xhr.onload = function() { 
+        if(xhr.status==200){
+        	let kakaoLoingUrl=xhr.response;
+        	window.open(kakaoLoingUrl,'width=500','height=500');
+        }else{
+            alert('abc');
+        }
+    }  
+}
 </script>
 </body>
 </html>

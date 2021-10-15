@@ -36,9 +36,33 @@ public class rs {
 
 	
 	@PostMapping("/test")
-	public String name() {
-		System.out.println("av");	
+	public String kakaologinpage() {
+		System.out.println("kakaologinpage");	
 		return "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=2b8214590890931fb474d08986898680&redirect_uri=http://localhost:8080/co/kakaoLogincallback";
+	}
+	@PostMapping("/kakaopay")
+	public String kakaopaypage() {
+		System.out.println("kakaologinpage");	
+        RestTemplate restTemplate=new RestTemplate();
+        HttpHeaders headers=new HttpHeaders();
+        LinkedMultiValueMap<String,Object> body=new LinkedMultiValueMap<>();
+		   body.add("cid", "TC0ONETIME");
+           body.add("partner_order_id","testtest");
+           body.add("partner_user_id", "test@naver.com");
+           body.add("item_name", "testitem");
+           body.add("quantity", 1);
+           body.add("total_amount", 500);
+           body.add("tax_free_amount", 0);
+           body.add("approval_url", "http://localhost:8080/kakaopayrollback");
+           body.add("cancel_url", "http://localhost:8080/kakaopayrollback");
+           body.add("fail_url", "http://localhost:8080/kakaopayrollback");
+           headers.add("Authorization","KakaoAK ac5d7bd93834444767d1b59477e6f92f");
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        HttpEntity<MultiValueMap<String,Object>>entity=new HttpEntity<>(body,headers);
+        System.out.println(entity.getBody()+" 요청정보"+entity.getHeaders());
+        JSONObject jsonObject=restTemplate.postForObject("https://kapi.kakao.com/v1/payment/ready",entity,JSONObject.class);
+        System.out.println(jsonObject);
+        return (String)jsonObject.get("next_redirect_pc_url");
 	}
     @RequestMapping("/kakaoLogincallback")
     public void kakaoLogincallback(HttpServletRequest request,HttpServletResponse response) {
