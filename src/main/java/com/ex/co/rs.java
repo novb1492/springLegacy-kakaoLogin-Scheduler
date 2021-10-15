@@ -75,11 +75,11 @@ public class rs {
         System.out.println("sms요청");   
         String apikey="NCSFT0AZ2O3FHMAX";
         String apiSecret="AHZNZ3IIMGSYIXFLR7HQDBYA5KPFSFCS";
-        String companyPhone="회사전화";
+        String companyPhone="01091443409";
        
         Message coolsms = new Message(apikey, apiSecret);
         HashMap<String, String> params = new HashMap<String, String>();
-        params.put("to", "보낼전화");
+        params.put("to", "01091443409");
         params.put("from", companyPhone);
         params.put("type", "SMS");
         params.put("text", "테스트");
@@ -153,7 +153,7 @@ public class rs {
          
     }
     private String requestPayString() {
-        return  String.format("%s%s%s%s%s%s%s","nxca_jt_il","card","test4","20211014","113000","500","ST1009281328226982205");
+        return  String.format("%s%s%s%s%s%s%s","nxca_jt_il","card","test5","20211014","113000","500","ST1009281328226982205");
     }
     private String requestcancleString(String mchtTrdNo,String price,String mchtId,String trdDt,String trdTm) {
         System.out.println("requestcancleString");

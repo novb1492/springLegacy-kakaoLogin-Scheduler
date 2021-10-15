@@ -40,6 +40,10 @@ public class HomeController {
 		
 		return "home";
 	}
+	@RequestMapping(value = "/settle", method = RequestMethod.GET)
+	public String settile(Locale locale, Model model) {
+		return "settle";
+	}
 	@RequestMapping("/doneSettlebankPage")
 	public void done(HttpServletRequest request,HttpServletResponse response) {
 		System.out.println("done");
